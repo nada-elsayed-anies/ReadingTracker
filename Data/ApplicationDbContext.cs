@@ -10,5 +10,6 @@ public class ApplicationDbContext : DbContext
     {
     }
 
+    // EF Core maps this to a "Books" table automatically, based on the property name.
     public DbSet<Book> Books => Set<Book>();
 }

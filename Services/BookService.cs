@@ -22,6 +22,8 @@ public class BookService : IBookService
             return await GetBooksAsync();
 
         var term = searchTerm.Trim();
+        // EF.Functions.Like maps to SQLite's LIKE, which is case-insensitive for ASCII text,
+        // so this runs the case-insensitive match in the database instead of in memory.
         return await _context.Books
             .Where(b => EF.Functions.Like(b.Title, $"%{term}%")
                      || EF.Functions.Like(b.Author, $"%{term}%"))
@@ -41,6 +43,8 @@ public class BookService : IBookService
         return book;
     }
 
+    // Updates the existing row in place rather than inserting a new one, so a book's
+    // history (Id, CreatedAt) is preserved across edits.
     public async Task<bool> UpdateBookAsync(Book book)
     {
         var existing = await _context.Books.FindAsync(book.Id);
@@ -68,6 +72,8 @@ public class BookService : IBookService
         return true;
     }
 
+    // Same rule as UpdateBookAsync: a status change (e.g. "Start Reading", "Complete")
+    // mutates the existing row instead of creating a new one for the same book.
     public async Task<bool> ChangeStatusAsync(int id, ReadingStatus status)
     {
         var existing = await _context.Books.FindAsync(id);
