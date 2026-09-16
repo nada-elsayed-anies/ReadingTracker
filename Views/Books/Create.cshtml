@@ -1,0 +1,66 @@
+@model Book
+
+@{
+    ViewData["Title"] = "Add Book";
+    var genres = new[]
+    {
+        "Fiction", "Fantasy", "Mystery", "Thriller", "Romance",
+        "Science Fiction", "Biography", "History", "Self-Development",
+        "Technology", "Other"
+    };
+}
+
+<h1>Add Book</h1>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Author" class="form-label"></label>
+        <input asp-for="Author" class="form-control" />
+        <span asp-validation-for="Author" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Genre" class="form-label"></label>
+        <select asp-for="Genre" class="form-select">
+            <option value="">-- Select a genre --</option>
+            @foreach (var genre in genres)
+            {
+                <option value="@genre">@genre</option>
+            }
+        </select>
+        <span asp-validation-for="Genre" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Rating" class="form-label"></label>
+        <select asp-for="Rating" class="form-select">
+            <option value="">-- No rating --</option>
+            @for (var i = 1; i <= 5; i++)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+        <span asp-validation-for="Rating" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ReadingNotes" class="form-label"></label>
+        <textarea asp-for="ReadingNotes" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="ReadingNotes" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Add Book</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

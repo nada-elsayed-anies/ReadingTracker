@@ -1,0 +1,88 @@
+@model List<Book>
+
+@{
+    ViewData["Title"] = "My Books";
+    var searchTerm = ViewData["SearchTerm"] as string;
+}
+
+<h1>Personal Reading Tracker</h1>
+
+<form asp-action="Index" method="get" class="d-flex mb-4" style="max-width: 500px;">
+    <input type="text" name="searchTerm" value="@searchTerm" class="form-control me-2"
+           placeholder="Search by title or author..." />
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+@if (!Model.Any())
+{
+    <p>No books found.</p>
+}
+else
+{
+    var sections = new[]
+    {
+        ReadingStatus.WantToRead,
+        ReadingStatus.CurrentlyReading,
+        ReadingStatus.Completed
+    };
+
+    foreach (var status in sections)
+    {
+        var booksInStatus = Model.Where(b => b.Status == status).ToList();
+        if (!booksInStatus.Any())
+        {
+            continue;
+        }
+
+        <h2 class="mt-4">@status.ToDisplayName()</h2>
+        <hr />
+
+        <div class="row row-cols-1 row-cols-md-2 g-3 mb-3">
+            @foreach (var book in booksInStatus)
+            {
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">@book.Title</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">@book.Author</h6>
+                            <p class="card-text">@book.Genre</p>
+
+                            @if (status == ReadingStatus.Completed)
+                            {
+                                if (book.Rating.HasValue)
+                                {
+                                    <p class="card-text">@(new string('★', book.Rating.Value))</p>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(book.ReadingNotes))
+                                {
+                                    <p class="card-text">@book.ReadingNotes</p>
+                                }
+                            }
+
+                            <div class="d-flex gap-2">
+                                @if (status == ReadingStatus.WantToRead)
+                                {
+                                    <form asp-action="StartReading" asp-route-id="@book.Id" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-outline-primary">Start Reading</button>
+                                    </form>
+                                }
+                                @if (status == ReadingStatus.CurrentlyReading)
+                                {
+                                    <form asp-action="Complete" asp-route-id="@book.Id" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-outline-success">Complete</button>
+                                    </form>
+                                }
+                                <a asp-action="Edit" asp-route-id="@book.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                <form asp-action="Delete" asp-route-id="@book.Id" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+}
+
+<a asp-action="Create" class="btn btn-success">+ Add Book</a>
