@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// Wires EF Core to the SQLite file named by the "DefaultConnection" string in appsettings.json.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(
         builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -37,3 +38,7 @@ app.MapControllerRoute(
 
 
 app.Run();
+
+// Top-level statements generate an `internal` Program class by default. This marker makes
+// it `public` so the integration tests' WebApplicationFactory<Program> can find it.
+public partial class Program { }

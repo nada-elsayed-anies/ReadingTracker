@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/Tests/" />
+  <Folder Name="/Tests/UnitTests/">
+    <Project Path="Tests/UnitTests/ReadingTracker.UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/Tests/IntegrationTests/">
+    <Project Path="Tests/IntegrationTests/ReadingTracker.IntegrationTests.csproj" />
+  </Folder>
+  <Project Path="ReadingTracker.csproj" />
+</Solution>
