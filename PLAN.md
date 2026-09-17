@@ -5,7 +5,7 @@ This is not a task tracker — see `TODO.md` (local, untracked) for granular ope
 
 ## Current status
 
-The application's core functionality and both test projects are implemented. CI is not yet set up.
+The application's core functionality, both test projects, and the CI pipeline are implemented.
 
 ## Completed phases
 
@@ -16,6 +16,7 @@ The application's core functionality and both test projects are implemented. CI 
 - **Phase 5 — UI Improvements**: basic Razor views and CSS for the book list/forms.
 - **Phase 6 — Unit Tests**: `Tests/UnitTests` covers `BookService` and `Book` validation.
 - **Phase 7 — Integration Tests**: `Tests/IntegrationTests` covers the full HTTP → Controller → Service → EF Core → SQLite path.
+- **Phase 8 — CI**: `.github/workflows/ci.yml` runs restore → build → unit tests → integration tests on every push/PR to `main`, failing on any build or test error.
 
 ## Current phase
 
@@ -31,5 +32,4 @@ No feature work is actively in progress. A prior `/code-review` pass left unreso
 
 ## Next planned phases
 
-- **Phase 8 — CI**: add a GitHub Actions workflow per `SPEC.MD` §15–17 (restore → build → unit tests → integration tests, triggered on push/PR to `main`, failing on any error).
 - **Phase 9 — CI Failure Demonstration**: intentionally break a test to observe CI catch it, then fix it and confirm the pipeline goes green — per `SPEC.MD` §21, this is part of the project's learning objective, not a bug to avoid.

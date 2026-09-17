@@ -51,9 +51,12 @@ rely on this substitution.
 - **Unit**: `BookServiceTests` (CRUD, ordering, status change, search incl. no-match/empty-term cases) and `BookValidationTests` (required fields, rating range/boundary, notes max length).
 - **Integration**: `BooksControllerIntegrationTests` — create-persists-to-DB, index-returns-expected-books, complete-changes-status-in-DB, delete-removes-from-DB.
 
+## CI
+
+`dotnet test` for both projects now runs in GitHub Actions on every push/PR to `main`, via `.github/workflows/ci.yml` (see `PLAN.md` and `CLAUDE.md`'s CI section).
+
 ## Future testing goals
 
-- Wire `dotnet test` into a GitHub Actions CI pipeline (see `PLAN.md` — not yet implemented).
 - Revisit the integration factory's `ClearAllPools()` teardown if a second integration test class is added (currently process-wide, noted as a potential race in `TODO.md`; not an issue yet with a single test class).
 
 ## Commands
