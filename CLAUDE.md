@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-This is an early-stage ASP.NET Core MVC project. Book CRUD, reading-status changes, and search are implemented end-to-end (`BooksController` → `IBookService`/`BookService` → `ApplicationDbContext`). Both test projects exist: `Tests/UnitTests` covers `BookService` and `Book` validation directly, and `Tests/IntegrationTests` exercises the full HTTP → Controller → Service → EF Core → SQLite path via `WebApplicationFactory<Program>`. Still missing relative to `SPEC.MD`: the GitHub Actions CI workflow (§15–17). Consult `SPEC.MD` before adding features; it defines the target architecture and remains the source of truth for anything not yet built.
+This is an early-stage ASP.NET Core MVC project. Book CRUD, reading-status changes, and search are implemented end-to-end (`BooksController` → `IBookService`/`BookService` → `ApplicationDbContext`). Both test projects exist: `Tests/UnitTests` covers `BookService` and `Book` validation directly, and `Tests/IntegrationTests` exercises the full HTTP → Controller → Service → EF Core → SQLite path via `WebApplicationFactory<Program>`. A GitHub Actions CI workflow (`.github/workflows/ci.yml`) now runs restore/build/unit-tests/integration-tests on every push/PR to `main`, per `SPEC.MD` §15–17. Consult `SPEC.MD` before adding features; it defines the target architecture and remains the source of truth for anything not yet built.
 
 ## Commands
 
@@ -56,7 +56,7 @@ Key architectural points:
 
 ## CI
 
-No GitHub Actions workflow exists yet. When added, it must (per `SPEC.MD` §15–17): trigger on pushes/PRs to `main`, restore, build, run unit tests, then run integration tests, failing the pipeline if the build or any test fails.
+`.github/workflows/ci.yml` implements `SPEC.MD` §15–17: it triggers on pushes and PRs targeting `main`, and runs a single job (`ubuntu-latest`) with four sequential steps — restore, build (`ReadingTracker.slnx`, `-c Release`), run unit tests, then run integration tests (both test steps use `--no-restore --no-build` against the same build output). Any failing step stops the job and fails the pipeline; the Actions UI shows exactly which step failed. No `dotnet-ef`/NuGet caching/test-report-publishing step is used — deliberately kept minimal (see `PLAN.md`).
 
 ## Testing intent
 Every class should stay mockable/testable without spinning up a real database or the ASP.NET pipeline — `BookService` takes `ApplicationDbContext` directly because tests supply a real (in-memory SQLite) one, not a mock, per the pattern above. If a design choice would make future unit/integration testing harder, flag it and propose the testable alternative instead of silently implementing it.

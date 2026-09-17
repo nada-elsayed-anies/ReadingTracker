@@ -25,7 +25,7 @@ and a CI pipeline against — see `PLAN.md` for what's built vs. planned toward 
 | Frontend | Razor Views, HTML, CSS (no JS framework) |
 | Automated Testing | xUnit |
 | Source Control | Git / GitHub |
-| CI | GitHub Actions — **planned, not yet implemented** (no `.github/workflows/` exists) |
+| CI | GitHub Actions — implemented (`.github/workflows/ci.yml`), runs on push/PR to `main` |
 | Authentication | None |
 
 ## Constraints and scope boundaries
@@ -44,6 +44,6 @@ propose adding them without the user explicitly asking first.
 
 ## Current facts vs. future plans
 
-- **Implemented now**: Book CRUD, status tracking, search, unit tests, integration tests (see `PLAN.md` for the phase breakdown).
-- **Planned, not yet implemented**: GitHub Actions CI workflow, and an intentional CI-failure demonstration exercise (`SPEC.MD` §21 Phases 8–9).
+- **Implemented now**: Book CRUD, status tracking, search, unit tests, integration tests, GitHub Actions CI workflow (see `PLAN.md` for the phase breakdown).
+- **Planned, not yet implemented**: an intentional CI-failure demonstration exercise (`SPEC.MD` §21 Phase 9).
 - **Known open issues** (not yet fixed): tracked informally in the local, untracked `TODO.md` from a prior review pass — see `PLAN.md`'s "Current phase" section for a summary.
